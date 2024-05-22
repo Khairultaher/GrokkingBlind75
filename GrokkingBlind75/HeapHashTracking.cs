@@ -1,5 +1,6 @@
 ﻿using Shouldly;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,6 +44,42 @@ public class HeapHashTracking
         }
 
         result.ShouldBe(expected);
+    }
 
+    [Theory]
+    [InlineData(new string[] { "eat", "tea", "beat", "neat" }, 0)]
+    public void GroupAnagramsTest(string[] strs, int dumm) {
+
+        var result = GroupAnagrams(strs);
+    }
+
+    public List<List<string>> GroupAnagrams(string[] strs) {
+        if(strs.Length == 0) return new List<List<string>>();
+
+        int[] count = new int[26];
+        List<List<string>> arrayList = new List<List<string>> ();
+        Dictionary<string, List<string>> keyValuePairs = new Dictionary<string, List<string>>();
+        foreach (string str in strs) {
+            Array.Fill(count, 0);
+            foreach (char c in str.ToCharArray()) {
+                int index = c - 'a';
+                count[index]++;
+
+            }
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < count.Length; i++) {
+                sb.Append("#");
+                sb.Append(count[i]);
+            }
+
+            string key = sb.ToString();
+            if (!keyValuePairs.ContainsKey(key))
+                keyValuePairs.Add(key, new List<string>());
+
+            keyValuePairs[key].Add(str);
+        }
+
+        arrayList.AddRange(keyValuePairs.Values);
+        return arrayList;
     }
 }
