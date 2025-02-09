@@ -114,14 +114,19 @@ public class HeapHashTracking
     }
 
     [Theory]
-    [InlineData(new int[] { 1, 2, 3, 4, 5}, 3)]
-    public void MedianOfStream(int[] arr, int expected) { 
+    //[InlineData(new int[] { 1, 2, 5, 3, 4 }, 3)]
+    [InlineData(new int[] { 1, 2, 3, 4 }, 2.5)]
+    public void FindMedianOfStream(int[] arr, double expected) { 
+
+        // arrange
         PriorityQueue<int, int> maxHeap = new PriorityQueue<int, int>(
             Comparer<int>.Create((a, b) => b - a)
         );
         PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>(
             //Comparer<int>.Create((a, b) => a - b)
         );
+
+        // act
         foreach (int num in arr) {
             if (maxHeap.Count == 0 || maxHeap.Peek() >= num)
                 maxHeap.Enqueue(num, num);
@@ -144,6 +149,7 @@ public class HeapHashTracking
         else
             result = maxHeap.Peek();
 
+        // assert
         result.ShouldBe(expected);
     }
 }

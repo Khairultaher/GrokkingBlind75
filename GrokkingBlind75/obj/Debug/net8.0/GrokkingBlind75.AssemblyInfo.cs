@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GrokkingBlind75")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+089ff04e2b3fb9ca70016010d2108ac749cb6a0d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6a1f1f2f3bfc4baa50ba403c7b506620980418a6")]
 [assembly: System.Reflection.AssemblyProductAttribute("GrokkingBlind75")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GrokkingBlind75")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
