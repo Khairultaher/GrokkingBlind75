@@ -82,4 +82,68 @@ public class HeapHashTracking
         arrayList.AddRange(keyValuePairs.Values);
         return arrayList;
     }
+
+
+    [Theory]
+    [InlineData(new int[] { 1, 1, 1, 2, 2, 3 }, 2)]
+    public void TopKFrequent(int[] arr, int k) {
+        List<int> expected = new List<int> { 1, 2 };
+
+        Dictionary<int, int> numFrequencyMap = new Dictionary<int, int>();
+
+        foreach (int n in arr)
+            numFrequencyMap[n] = numFrequencyMap.GetValueOrDefault(n, 0) + 1;
+
+        PriorityQueue<KeyValuePair<int, int>, int> topKElements = new PriorityQueue<KeyValuePair<int, int>, int>(
+            Comparer<int>.Create((a, b) => a - b)
+        );
+
+        foreach (var entry in numFrequencyMap) {
+            topKElements.Enqueue(entry, entry.Value);
+            if (topKElements.Count > k)
+                topKElements.Dequeue();
+        }
+
+        List<int> topNumbers = new List<int>(k);
+        while (topKElements.Count > 0)
+            topNumbers.Add(topKElements.Dequeue().Key);
+
+        topNumbers.Sort();
+
+        topNumbers.ShouldBe(expected);
+    }
+
+    [Theory]
+    [InlineData(new int[] { 1, 2, 3, 4, 5}, 3)]
+    public void MedianOfStream(int[] arr, int expected) { 
+        PriorityQueue<int, int> maxHeap = new PriorityQueue<int, int>(
+            Comparer<int>.Create((a, b) => b - a)
+        );
+        PriorityQueue<int, int> minHeap = new PriorityQueue<int, int>(
+            //Comparer<int>.Create((a, b) => a - b)
+        );
+        foreach (int num in arr) {
+            if (maxHeap.Count == 0 || maxHeap.Peek() >= num)
+                maxHeap.Enqueue(num, num);
+            else
+                minHeap.Enqueue(num, num);
+
+            if (maxHeap.Count > minHeap.Count + 1) {
+                var x = maxHeap.Dequeue();
+                minHeap.Enqueue(x, x);
+            }
+            else if (maxHeap.Count < minHeap.Count) {
+                var x = minHeap.Dequeue();
+                maxHeap.Enqueue(x,x);
+            }
+                
+        }
+        double result = 0;
+        if (maxHeap.Count == minHeap.Count)
+            result = (maxHeap.Peek() + minHeap.Peek()) / 2.0;
+        else
+            result = maxHeap.Peek();
+
+        result.ShouldBe(expected);
+    }
 }
